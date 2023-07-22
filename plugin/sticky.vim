@@ -10,9 +10,9 @@ command! -range -bang Sticky call sticky#Pin(<line1>, <line2>, <q-bang>)
 
 augroup Sticky
   autocmd!
-  autocmd WinScrolled,VimResized,QuitPre,WinEnter,FocusGained *
+  autocmd WinScrolled,VimResized,WinResized,WinEnter,FocusGained *
         \ call sticky#Redraw()
-  autocmd WinLeave,BufLeave,BufWinLeave,FocusLost *
+  autocmd QuitPre *
         \ call sticky#Reset()
 augroup END
 
