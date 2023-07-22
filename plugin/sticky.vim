@@ -16,7 +16,7 @@ augroup Sticky
         \ call sticky#Reset()
 augroup END
 
-sign define StickyPin text=📌 texthl=Comment
+sign define StickyPin text=📌 texthl=Comment linehl=Pmenu
 
 let &cpo = s:keepcpo
 unlet s:keepcpo
