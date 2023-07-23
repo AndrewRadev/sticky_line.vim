@@ -1,17 +1,17 @@
-*sticky.txt*	TODO
+*sticky_line.txt*	TODO
 
 ==============================================================================
-CONTENTS                                        *sticky*   *sticky-contents*
+CONTENTS                                    *sticky_line*   *sticky_line-contents*
 
-    Installation................................: |sticky-installation|
-    Usage.......................................: |sticky-usage|
-    Settings....................................: |sticky-settings|
-    Internals...................................: |sticky-internals|
-    Issues......................................: |sticky-issues|
+    Installation................................: |sticky_line-installation|
+    Usage.......................................: |sticky_line-usage|
+    Settings....................................: |sticky_line-settings|
+    Internals...................................: |sticky_line-internals|
+    Issues......................................: |sticky_line-issues|
 
 
 ==============================================================================
-INSTALLATION                                            *sticky-installation*
+INSTALLATION                                          *sticky_line-installation*
 
 The easiest way to install the plugin is with a plugin manager:
 
@@ -26,44 +26,44 @@ cloning the project (or adding it as a submodule) under
 >
     mkdir -p ~/.vim/pack/andrewradev/start
     cd ~/.vim/pack/andrewradev/start
-    git clone https://github.com/andrewradev/sticky.vim.git
+    git clone https://github.com/andrewradev/sticky_line.vim.git
 
     # to generate documentation tags:
-    vim -u NONE -c "helptags sticky.vim/doc" -c q
+    vim -u NONE -c "helptags sticky_line.vim/doc" -c q
 <
 This should automatically load the plugin for you when Vim starts.
 Alternatively, you can add it to `~/.vim/pack/<any-name>/opt/` instead and
 load it in your .vimrc manually with:
 >
-    packadd sticky
+    packadd sticky_line
 <
 If you'd rather not use git, you can download the files from the "releases"
 tab and unzip them in the relevant directory:
-https://github.com/AndrewRadev/sticky.vim/releases.
+https://github.com/AndrewRadev/sticky_line.vim/releases.
 
 
 ==============================================================================
-USAGE                                                          *sticky-usage*
+USAGE                                                        *sticky_line-usage*
 
 TODO
 
 
 ==============================================================================
-SETTINGS                                                    *sticky-settings*
+SETTINGS                                                  *sticky_line-settings*
 
 TODO
 
 
 ==============================================================================
-INTERNALS                                                  *sticky-internals*
+INTERNALS                                                *sticky_line-internals*
 
 TODO
 
 ==============================================================================
-ISSUES                                                        *sticky-issues*
+ISSUES                                                      *sticky_line-issues*
 
 Any issues and suggestions are very welcome on the github bugtracker:
-https://github.com/AndrewRadev/sticky.vim/issues
+https://github.com/AndrewRadev/sticky_line.vim/issues
 
 
 vim:tw=78:sw=4:ft=help:norl:

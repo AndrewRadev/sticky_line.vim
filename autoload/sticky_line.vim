@@ -1,22 +1,22 @@
-function! sticky#Pin(line1, line2, bang) abort
+function! sticky_line#Pin(line1, line2, bang) abort
   if !exists('b:sticky_lines')  | let b:sticky_lines  = [] | endif
   if !exists('b:sticky_popups') | let b:sticky_popups = [] | endif
 
   if a:bang == '!'
-    call sticky#Reset()
+    call sticky_line#Reset()
   else
     call add(b:sticky_lines, [a:line1, a:line2])
 
     for line in range(a:line1, a:line2)
-      call sign_place(0, '', 'StickyPin', bufnr(), { 'lnum': line })
+      call sign_place(0, '', 'StickyLinePin', bufnr(), { 'lnum': line })
     endfor
 
     let b:sticky_lines = s:SortAndMerge(b:sticky_lines)
-    call sticky#Redraw()
+    call sticky_line#Redraw()
   endif
 endfunction
 
-function! sticky#Redraw() abort
+function! sticky_line#Redraw() abort
   let offset = 0
   call s:ClosePopups()
 
@@ -45,7 +45,7 @@ function! sticky#Redraw() abort
   endfor
 endfunction
 
-function! sticky#Reset() abort
+function! sticky_line#Reset() abort
   call s:ClosePopups()
 
   let b:sticky_lines = []
