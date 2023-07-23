@@ -1,6 +1,6 @@
-## Usage
+## Usage (TODO)
 
-TODO
+Select some lines and use `:StickyLine` on them to pin them to the top of the screen while scrolling. Work-in-progress, a lot to do to make this reliable.
 
 ## Contributing
 
