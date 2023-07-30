@@ -1,26 +1,29 @@
 function! sticky_line#Pin(line1, line2, bang) abort
-  if !exists('b:sticky_lines')  | let b:sticky_lines  = [] | endif
   if !exists('b:sticky_popups') | let b:sticky_popups = [] | endif
+
+  let sticky_lines = s:GroupSequentialLines(s:GetLinesFromSigns())
 
   if a:bang == '!'
     call sticky_line#Reset()
   else
-    call add(b:sticky_lines, [a:line1, a:line2])
+    call add(sticky_lines, [a:line1, a:line2])
+    let sticky_lines = s:SortAndMerge(sticky_lines)
 
     for line in range(a:line1, a:line2)
-      call sign_place(0, '', 'StickyLinePin', bufnr(), { 'lnum': line })
+      call sign_place(0, 'StickyLine', 'StickyLinePin', bufnr(), { 'lnum': line })
     endfor
 
-    let b:sticky_lines = s:SortAndMerge(b:sticky_lines)
     call sticky_line#Redraw()
   endif
 endfunction
 
 function! sticky_line#Redraw() abort
+  let sticky_lines = s:GroupSequentialLines(s:GetLinesFromSigns())
+
   let offset = 0
   call s:ClosePopups()
 
-  for [line1, line2] in get(b:, 'sticky_lines', [])
+  for [line1, line2] in sticky_lines
     if line1 >= line('w0') | continue | endif
 
     let line_count = line2 - line1 + 1
@@ -47,8 +50,32 @@ endfunction
 
 function! sticky_line#Reset() abort
   call s:ClosePopups()
+  call sign_unplace('StickyLine', { 'buffer': bufnr() })
+endfunction
 
-  let b:sticky_lines = []
+function! s:GetLinesFromSigns() abort
+  let signs = sign_getplaced(bufnr(), { 'group': 'StickyLine' })[0].signs
+  let signs = filter(signs, { _, sign -> sign.name ==# 'StickyLinePin' })
+
+  return map(signs, { _, sign -> sign.lnum })
+endfunction
+
+function! s:GroupSequentialLines(lines) abort
+  if len(a:lines) == 0
+    return []
+  endif
+
+  let groups = [[a:lines[0], a:lines[0]]]
+
+  for lnum in a:lines[1:]
+    if lnum == groups[-1][1] + 1
+      let groups[-1][1] = lnum
+    else
+      call add(groups, [lnum, lnum])
+    endif
+  endfor
+
+  return groups
 endfunction
 
 function! s:ClosePopups() abort
@@ -100,15 +127,24 @@ function! s:SortPairs(left, right) abort
   endif
 endfunction
 
-" call assert_equal([[1, 3]], s:SortAndMerge([[1, 2], [2, 3]]))
-" call assert_equal([[1, 2], [3, 4]], s:SortAndMerge([[1, 2], [3, 4]]))
-" call assert_equal([[1, 2], [3, 4]], s:SortAndMerge([[3, 4], [1, 2]]))
-" call assert_equal([[10, 20]], s:SortAndMerge([[10, 20], [10, 20]]))
-" call assert_equal([[10, 20]], s:SortAndMerge([[10, 20], [11, 20]]))
-" call assert_equal([[9, 20]], s:SortAndMerge([[10, 20], [9, 15]]))
-"
-" for e in v:errors
-"   echo e
-" endfor
-"
-" let v:errors = []
+function! sticky_line#Test()
+  call assert_equal([[1, 3]], s:SortAndMerge([[1, 2], [2, 3]]))
+  call assert_equal([[1, 2], [3, 4]], s:SortAndMerge([[1, 2], [3, 4]]))
+  call assert_equal([[1, 2], [3, 4]], s:SortAndMerge([[3, 4], [1, 2]]))
+  call assert_equal([[10, 20]], s:SortAndMerge([[10, 20], [10, 20]]))
+  call assert_equal([[10, 20]], s:SortAndMerge([[10, 20], [11, 20]]))
+  call assert_equal([[9, 20]], s:SortAndMerge([[10, 20], [9, 15]]))
+
+  call assert_equal([], s:GroupSequentialLines([]))
+  call assert_equal([[1, 1]], s:GroupSequentialLines([1]))
+  call assert_equal(
+        \ [[1, 3], [5, 7], [9, 12]],
+        \ s:GroupSequentialLines([1, 2, 3, 5, 6, 7, 9, 10, 11, 12])
+        \ )
+
+  for e in v:errors
+    echo e
+  endfor
+
+  let v:errors = []
+endfunction
