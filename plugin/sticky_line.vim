@@ -1,3 +1,7 @@
+if !exists('#WinScrolled')
+  finish
+endif
+
 if exists('g:loaded_sticky_line') || &cp
   finish
 endif
